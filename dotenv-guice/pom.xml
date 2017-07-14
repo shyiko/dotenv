@@ -7,16 +7,16 @@
     <parent>
         <groupId>com.github.shyiko.dotenv</groupId>
         <artifactId>pom</artifactId>
-        <version>0.1.0-SNAPSHOT</version>
+        <version>0.0.0-SNAPSHOT</version>
     </parent>
-    
+
     <artifactId>dotenv-guice</artifactId>
-    
+
     <dependencies>
         <dependency>
             <groupId>com.github.shyiko.dotenv</groupId>
             <artifactId>dotenv</artifactId>
-            <version>0.1.0-SNAPSHOT</version>
+            <version>0.0.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.google.inject</groupId>
@@ -25,5 +25,5 @@
             <scope>provided</scope>
         </dependency>
     </dependencies>
-    
+
 </project>
