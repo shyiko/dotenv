@@ -35,7 +35,9 @@ public final class DotEnv {
     private static Map<String, String> parse(InputStream inputStream) {
         Properties properties = new Properties();
         try { properties.load(inputStream); } catch (IOException e) { throw new UncheckedIOException(e); }
-        return properties.entrySet().stream().collect(Collectors.toMap(Object::toString, Object::toString));
+        return properties.entrySet().stream().collect(Collectors.toMap(
+            entry -> entry.getKey().toString(), entry -> entry.getValue().toString()
+        ));
     }
 
 }
