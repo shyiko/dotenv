@@ -13,7 +13,7 @@ Features:
 <dependency>
     <groupId>com.github.shyiko.dotenv</groupId>
     <artifactId>dotenv</artifactId>
-    <version>0.1.0</version>
+    <version>0.1.1</version>
 </dependency>
 ```
 
@@ -46,7 +46,7 @@ will then output `http://0.0.0.0:5050`
 <dependency>
     <groupId>com.github.shyiko.dotenv</groupId>
     <artifactId>dotenv-guice</artifactId>
-    <version>0.1.0</version>
+    <version>0.1.1</version>
 </dependency>
 ```
 
