@@ -1,0 +1,36 @@
+image: java:openjdk-8u91-jdk
+build:
+  script:
+    # replacing SNAPSHOT with ref
+    - ./mvnw versions:set -DnewVersion=$(python -c "import xml.etree.ElementTree as ET; print(ET.parse(open('pom.xml')).getroot().find('{http://maven.apache.org/POM/4.0.0}version').text)" | sed "s/SNAPSHOT/$(echo $CI_BUILD_REF | cut -c -12)/g")
+    # overriding user home so that mwn & dependencies would be stored in {working directory}/.m2
+    # which in turn allows .m2 content to be cached
+    # https://gitlab.com/gitlab-org/gitlab-ce/issues/15167
+    - _JAVA_OPTIONS="-Duser.home=$(pwd)" ./mvnw -B clean verify
+    # - |
+    #   if [[ $CI_BUILD_REF_NAME == "master" || $CI_BUILD_TAG != "" ]]; then
+    #     docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN gitlab.webamg.com
+    #     docker build -t gitlab.webamg.com/auth/kehleyr:${CI_BUILD_TAG:-$CI_BUILD_REF_NAME} .
+    #     docker push gitlab.webamg.com/auth/kehleyr:${CI_BUILD_TAG:-$CI_BUILD_REF_NAME}
+    #   fi
+  only:
+    - master
+    - tags
+    # https://github.com/shyiko/gitlab-ci-build-on-merge-request
+    - triggers
+cache:
+  paths:
+    - .m2/
+.deploy_template: &deploy_template
+  script:
+    - echo "not implemented"
+    # - kubectl config set-cluster revjet --server=http://10.254.161.1:8080
+    # - kubectl config set-context staging --namespace=staging --cluster=revjet
+    # - kubectl config use-context staging
+    # - kubectl set image deployments/kehleyr kehleyr=docker.webamg.com/auth/kehleyr:${CI_BUILD_TAG:-$CI_BUILD_REF_NAME}
+    # - kubectl rollout status deployments/kehleyr
+deploy_staging:
+  <<: *deploy_template
+  stage: deploy
+  environment: staging
+  when: manual

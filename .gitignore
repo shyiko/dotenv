@@ -1,0 +1,11 @@
+.tmp
+node_modules
+.idea
+.vscode
+target
+*.iml
+.vertx
+.rocksdb
+
+# DO NOT remove .env from .gitignore!
+# .env
