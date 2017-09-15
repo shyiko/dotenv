@@ -18,9 +18,9 @@ Features:
 ```
 
 ENV resolution order (sources higher in the list take precedence over those located lower):
-- `.env` file on the classpath
-- `.env` file in current working directory (might not exist)
 - System.getenv() 
+- `.env` file in current working directory (might not exist)
+- `.env` file on the classpath
 
 > (java example)
 
