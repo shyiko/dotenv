@@ -3,7 +3,7 @@
 A [twelve-factor configuration](https://12factor.net/config) library for Java 8+.
 
 Features:
-- seamless integration with [Guice](https://github.com/google/guice) (module is optional);
+- [seamless integration with Guice](https://github.com/shyiko/dotenv#integration-with-guice) (prefer Spring? see [here](https://github.com/shyiko/dotenv#integration-with-spring));
 - zero dependencies;
 - available in Maven Central.
 
@@ -40,7 +40,7 @@ PORT=5050 app.jar
 
 will then output `http://0.0.0.0:5050`
 
-### Integration with Guice
+### Integration with [Guice](https://github.com/google/guice)
 
 ```xml
 <dependency>
@@ -77,6 +77,43 @@ static class S {
 public static void main(String[] args) {
     Injector injector = Guice.createInjector(new DotEnvModule()/*, ... */);
     S s = injector.getInstance(S.class);
+    s.run();
+}
+```
+
+### Integration with [Spring](https://spring.io/)
+
+> (Main.java)
+
+```java
+static class S {
+    private final String scheme;
+    private final String host;
+    private final int port;
+
+    @Autowired
+    public S(
+        @Value("${SCHEME}") String scheme, 
+        @Value("${HOST}") String host, 
+        @Value("${PORT}") int port
+    ) {
+        this.scheme = scheme;
+        this.host = host;
+        this.port = port;
+    }
+
+    public void run() {
+        System.out.println(scheme + "://" + host + ":" + port);
+    }
+}
+
+public static void main(String[] args) {
+    ConfigurableApplicationContext ctx = new AnnotationConfigApplicationContext();
+    ctx.getEnvironment().getPropertySources().addFirst(
+        new MapPropertySource("dotenv", new HashMap<>(DotEnv.load()))
+    );
+    ctx.refresh();
+    S s = ctx.getBeanFactory().createBean(S.class);
     s.run();
 }
 ```
